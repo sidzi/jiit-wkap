@@ -1,12 +1,11 @@
 from splinter import Browser
 from easygui import passwordbox
 from bs4 import BeautifulSoup
+from re import search
 
 from excelUtils import writer
 
 passwd = passwordbox("Enter Passsword : ")
-
-writer.write('test.xlsx', 1, 2, 'Lovingly Writing')
 
 if not passwd:
     exit()
@@ -27,8 +26,11 @@ with Browser() as browser:
         browser.visit("https://webkiosk.jiit.ac.in/StudentFiles/Exam/StudCGPAReport.jsp")
         bsParseHtml = BeautifulSoup(browser.html, "html.parser")
         gpaTable = bsParseHtml.find(id='table-1')
+        i=1
         for gpaRow in gpaTable.find_all('tr'):
             for a in gpaRow.find_all('a', href=True):
-                print(str(a['href']).lstrip('AcademicDetSem.jsp?'))
+                writer.write(workbook_name='testData',row=i,col=2,value=search('SGP=([0-9][.][0-9])',str(a['href'])).group(1))
+                writer.write(workbook_name='testData',row=i,col=3,value=search('CGP=([0-9][.][0-9])',str(a['href'])).group(1))
+                i+=1
     else:
-        print("No, it wasn't found... We need to improve our SEO techniques")
+        print("How the hell ????")
