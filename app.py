@@ -1,9 +1,6 @@
 from splinter import Browser
 from easygui import passwordbox, enterbox
-from bs4 import BeautifulSoup
-from re import search
 from fileUtils import reader
-from excelUtils import writer
 
 (memcode, passcode) = reader.read()
 if memcode is None:
@@ -25,7 +22,7 @@ with Browser() as browser:
     # Interact with elements
     button.click()
     # if 1:
-    #     browser.visit("https://webkiosk.jiit.ac.in/StudentFiles/Exam/StudCGPAReport.jsp")
+    # browser.visit("https://webkiosk.jiit.ac.in/StudentFiles/Exam/StudCGPAReport.jsp")
     #     bsParseHtml = BeautifulSoup(browser.html, "html.parser")
     #     gpaTable = bsParseHtml.find(id='table-1')
     #     i=1
