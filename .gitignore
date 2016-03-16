@@ -1,5 +1,5 @@
 # Virtual Envs not to be commited
-venvForMajorProject/
+#venvForMajorProject/
 *.xlsx
 *.xls
 # Byte-compiled / optimized / DLL files
