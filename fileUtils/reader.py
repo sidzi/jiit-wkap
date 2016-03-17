@@ -3,10 +3,10 @@ def read():
         target = open("user.conf", 'r')
     except IOError:
         return None, None
-    memcode = target.readline()[:-1]
-    passcode = target.readline()[:-1]
+    memcode = target.readline()
+    passcode = target.readline()
 
-    if memcode is '' or passcode is '':
+    if not memcode or not passcode:
         return None, None
 
-    return memcode, passcode
+    return memcode[:-1], passcode[:-1]

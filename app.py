@@ -3,10 +3,11 @@ from easygui import passwordbox, enterbox
 from fileUtils import reader
 
 (memcode, passcode) = reader.read()
-if memcode is None:
+if memcode is None or memcode is '':
     memcode = enterbox("Enter Member Code:")
     passcode = passwordbox()
     from fileUtils import writer
+
     writer.write(memcode, passcode)
 
 with Browser() as browser:
@@ -21,15 +22,16 @@ with Browser() as browser:
     button = browser.find_by_name('BTNSubmit')
     # Interact with elements
     button.click()
-    # if 1:
-    # browser.visit("https://webkiosk.jiit.ac.in/StudentFiles/Exam/StudCGPAReport.jsp")
-    #     bsParseHtml = BeautifulSoup(browser.html, "html.parser")
-    #     gpaTable = bsParseHtml.find(id='table-1')
-    #     i=1
-    #     for gpaRow in gpaTable.find_all('tr'):
-    #         for a in gpaRow.find_all('a', href=True):
-    #             writer.write(workbook_name='testData',row=i,col=2,value=search('SGP=([0-9][.][0-9])',str(a['href'])).group(1))
-    #             writer.write(workbook_name='testData',row=i,col=3,value=search('CGP=([0-9][.][0-9])',str(a['href'])).group(1))
-    #             i+=1
-    # else:
-    #     print("How the hell ????")
+    if browser.status_code == 200 and not "Wrong Member" in browser.html:
+        browser.visit("https://webkiosk.jiit.ac.in/EmployeeFiles/AcademicInfo/ViewAttendanceSummary11.jsp?SrcType=I")
+        bsParseHtml = BeautifulSoup(browser.html, "html.parser")
+        gpaTable = bsParseHtml.find(id='table-1')
+        i = 1
+        for gpaRow in gpaTable.find_all('tr'):
+            for a in gpaRow.find_all('a', href=True):
+                print a
+                # writer.write(workbook_name='testData',row=i,col=2,value=search('SGP=([0-9][.][0-9])',str(a['href'])).group(1))
+                # writer.write(workbook_name='testData',row=i,col=3,value=search('CGP=([0-9][.][0-9])',str(a['href'])).group(1))
+                # i+=1
+    else:
+        print("How the hell ????")
