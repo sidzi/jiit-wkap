@@ -1,6 +1,3 @@
-from encryptionUtils import encryption
-
-
 def write(memcode, passcode):
     target = open("user.conf", 'w')
     target.truncate()
