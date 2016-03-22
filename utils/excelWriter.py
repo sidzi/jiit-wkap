@@ -1,14 +1,19 @@
-import os
 import openpyxl
+import os
 
 
-def write(workbook_name, row, col, value):
-    if not (str(workbook_name).endswith('.xlsx') or str(workbook_name).endswith('.xls')):
-        workbook_name = str(workbook_name) + '.xlsx'
-    if os.path.exists(workbook_name):
-        workbook = openpyxl.load_workbook(workbook_name)
-    else:
-        workbook = openpyxl.Workbook()
-    worksheet = workbook.active
-    worksheet.cell(row=row, column=col, value=value)
-    workbook.save(filename=workbook_name)
+class ExcelWriter:
+    def __init__(self, wb_name):
+        if not (str(wb_name).endswith('.xlsx') or str(wb_name).endswith('.xls')):
+            self.workbook_name = str(wb_name) + '.xlsx'
+        if os.path.exists(wb_name):
+            self.workbook = openpyxl.load_workbook(wb_name)
+        else:
+            self.workbook = openpyxl.Workbook()
+        self.worksheet = self.workbook.active
+
+    def write(self, row, col, value):
+        self.worksheet.cell(row=row, column=col, value=value)
+
+    def close(self):
+        self.workbook.save(filename=self.workbook_name)

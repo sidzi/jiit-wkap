@@ -13,7 +13,7 @@ if len(sys.argv) > 1:
         urls.append("https://webkiosk.jiit.ac.in/EmployeeFiles/PersonalInfo/SelfAttendanceDetail.jsp")
         jobs.append('checkAtt')
     elif 'pullAtt' in sys.argv:
-        urls.append("https://webkiosk.jiit.ac.in/EmployeeFiles/AcademicInfo/ViewAttendanceSummary11.jsp")
+        urls.append("https://webkiosk.jiit.ac.in/EmployeeFiles/AcademicInfo/ViewAttendanceSummary11.jsp?SrcType=I")
         jobs.append('pullAtt')
     else:
         print "Enter a valid argument"
@@ -30,17 +30,14 @@ if member_code is None or member_code is '':
 
 with Browser() as browser:
     browser.visit("https://webkiosk.jiit.ac.in/")
-    # if browser.status_code == 404:
-    #     print "Site Down ! or Connection Down !"
-    #     exit()
     browser.find_by_id('UserType').first.select('E')
     browser.fill('MemberCode', member_code)
     browser.fill('Password', password)
     button = browser.find_by_name('BTNSubmit')
     button.click()
-    # if not (browser.status_code == 200 and "Wrong Member" not in browser.html):
-    #     print("Wrong Username/Password")
-    #     exit()
+    if "Wrong Member" in browser.html:
+        print("Wrong Username/Password")
+        exit()
     i = 0
     while i < len(jobs):
         browser.visit(urls[i])

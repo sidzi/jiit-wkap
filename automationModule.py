@@ -6,16 +6,20 @@ def activate(html_page, job, **kwargs):
     if 'pullAtt' in job:
         if 'fileNameID' in kwargs:
             wb_name = 'AttendanceList' + kwargs.get('fileNameID')
+        else:
+            wb_name = 'AttendanceListDefault'
         soup = BeautifulSoup(html_page, "html.parser")
         student_attendance_rows = soup.find(id="table-1").find("tbody").find_all("tr")
+        excel_writer = excelWriter.ExcelWriter(wb_name)
         i = 1
         for studentAttendanceRow in student_attendance_rows:
             student_data = studentAttendanceRow.text.splitlines()[1:]
             j = 1
             for data in student_data:
-                excelWriter.write(workbook_name=wb_name, row=i, col=j, value=data)
+                excel_writer.write(row=i, col=j, value=data)
                 j += 1
             i += 1
+        excel_writer.close()
         return True
     elif 'checkAtt' in job:
         soup = BeautifulSoup(html_page, "html.parser")
