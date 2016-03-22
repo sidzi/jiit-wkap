@@ -56,10 +56,11 @@ with Browser() as browser:
             button.click()
 
             if browser.status_code == 200:
-                automationModule.activate(browser.html, job=jobs[i], fileNameID=subject_choice_selected)
+                if automationModule.activate(browser.html, job=jobs[i], fileNameID=subject_choice_selected):
+                    easygui.msgbox(msg="Debar list created !!")
             i += 1
 
-        if jobs[i] is 'checkAtt':
+        elif jobs[i] is 'checkAtt':
             button = browser.find_by_value('Show')
             button.click()
             if browser.status_code == 200:
