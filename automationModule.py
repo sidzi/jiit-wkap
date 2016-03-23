@@ -2,10 +2,10 @@ from bs4 import BeautifulSoup
 from utils import excelWriter
 
 
-def activate(html_page, **kwargs):
-    if 'attendancePull' in kwargs:
+def activate(html_page, job, **kwargs):
+    if 'pullAtt' in job:
         if 'fileNameID' in kwargs:
-            wb_name='AttendanceList'+kwargs.get('fileNameID')
+            wb_name = 'AttendanceList' + kwargs.get('fileNameID')
         soup = BeautifulSoup(html_page, "html.parser")
         student_attendance_rows = soup.find(id="table-1").find("tbody").find_all("tr")
         i = 1
@@ -16,3 +16,8 @@ def activate(html_page, **kwargs):
                 excelWriter.write(workbook_name=wb_name, row=i, col=j, value=data)
                 j += 1
             i += 1
+        return True
+    elif 'checkAtt' in job:
+        soup = BeautifulSoup(html_page, "html.parser")
+        att_status = soup.find(id="table-1").find("tbody").find("tr").find_all("td")
+        return att_status[1].text
