@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from utils import excelWriter
+from utils import excelWriter,excelReader
 
 
 def activate(html_page, job, **kwargs):
@@ -19,9 +19,19 @@ def activate(html_page, job, **kwargs):
                 excel_writer.write(row=i, col=j, value=data)
                 j += 1
             i += 1
+            del student_data
         excel_writer.close()
+        del student_attendance_rows
         return True
     elif 'checkAtt' in job:
         soup = BeautifulSoup(html_page, "html.parser")
         att_status = soup.find(id="table-1").find("tbody").find("tr").find_all("td")
         return att_status[1].text
+    elif 'markAtt' in job:
+        soup = BeautifulSoup(html_page, "html.parser")
+        student_attendance_rows = soup.find(id="table-1").find("tbody").find_all("tr")
+        student_data = excelReader.read("AttListDef")
+        for studentAttendanceRow in student_attendance_rows:
+            for data in student_data:
+
+        return False

@@ -1,5 +1,5 @@
-import os
 import openpyxl
+import os
 
 
 def read(workbook_name):
@@ -11,19 +11,15 @@ def read(workbook_name):
         print("Excel File Not Found ! ")
         raise Exception
     worksheet = workbook.active
-    readData = [[0 for x in range(worksheet.max_column + 1)] for x in range(worksheet.max_row + 1)]
+    read_data = [[0 for x in range(worksheet.max_column + 1)] for x in range(worksheet.max_row + 1)]
     j = 1
     for row in worksheet.rows:
         i = 1
         for cell in row:
             if cell.value is None:
-                readData[j][i] = ""
+                read_data[j][i] = ""
             else:
-                readData[j][i] = float(cell.value)
+                read_data[j][i] = float(cell.value)
             i += 1
         j += 1
-    return readData
-
-
-if __name__ == "__main__":
-    read('../testData.xlsx')
+    return read_data

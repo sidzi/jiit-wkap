@@ -15,6 +15,9 @@ if len(sys.argv) > 1:
     elif 'pullAtt' in sys.argv:
         urls.append("https://webkiosk.jiit.ac.in/EmployeeFiles/AcademicInfo/ViewAttendanceSummary11.jsp?SrcType=I")
         jobs.append('pullAtt')
+    elif 'markAtt' in sys.argv:
+        urls.append("https://webkiosk.jiit.ac.in/EmployeeFiles/AcademicInfo/NewDailyStudentAttendanceEntry1.jsp")
+        jobs.append('markAtt')
     else:
         print "Enter a valid argument"
         exit()
@@ -67,3 +70,32 @@ with Browser() as browser:
                 easygui.msgbox(msg="You've been marked {0} for today !".format(
                     automationModule.activate(browser.html, job=jobs[i])))
             i += 1
+        elif jobs[i] is 'markAtt':
+            exam_choices = BeautifulSoup(browser.html, "html.parser").find(id='Exam').find_all("option")
+            exam_choices_list = list(exam_choice.attrs['value'] for exam_choice in exam_choices)
+            exam_choice_selected = easygui.choicebox(
+                choices=exam_choices_list)  # TODO Change this code to automatically get the odd or even part and the year
+            browser.find_by_id('Exam').first.select(exam_choice_selected)
+
+            subject_choices = BeautifulSoup(browser.html, "html.parser").find(id='Subject').find_all("option")
+            subject_choices_list = list(choice.attrs['value'] for choice in subject_choices)
+            subject_choice_selected = easygui.choicebox(choices=subject_choices_list)
+            browser.find_by_id('Subject').first.select(subject_choice_selected)
+
+            button = browser.find_by_value('Submit')
+            button.click()
+
+            checkbox = browser.find_by_id('SubSection1').first
+            checkbox.check()
+
+            browser.fill("timepicker1", easygui.enterbox("Enter Class Start Time:"))
+            browser.fill("timepicker2", easygui.enterbox("Enter Class End Time:"))
+
+            button = browser.find_by_value('Show/Refresh')
+            button.click()
+
+            if browser.status_code == 200:
+                if automationModule.activate(browser.html, job=jobs[i]):
+                    easygui.msgbox(msg="Attendance marked")
+                else:
+                    easygui.msgbox(msg="Attendance Marking Failed")
