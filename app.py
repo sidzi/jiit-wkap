@@ -71,10 +71,20 @@ with Browser() as browser:
                     automationModule.activate(browser.html, job=jobs[i])))
             i += 1
         elif jobs[i] is 'markAtt':
+            import datetime
+
+            now = datetime.datetime.now()
+            if now.month <= 6:
+                sem = "EVE"
+            else:
+                sem = "ODD"
             exam_choices = BeautifulSoup(browser.html, "html.parser").find(id='Exam').find_all("option")
             exam_choices_list = list(exam_choice.attrs['value'] for exam_choice in exam_choices)
-            exam_choice_selected = easygui.choicebox(
-                choices=exam_choices_list)  # TODO Change this code to automatically get the odd or even part and the year
+            exam_choice_selected = None
+            for choice in exam_choices_list:
+                if str(now.year) in choice:
+                    if sem in choice:
+                        exam_choice_selected = choice
             browser.find_by_id('Exam').first.select(exam_choice_selected)
 
             subject_choices = BeautifulSoup(browser.html, "html.parser").find(id='Subject').find_all("option")

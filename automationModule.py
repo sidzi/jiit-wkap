@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
-from utils import excelWriter,excelReader
-
+from utils import excelWriter, excelReader
 
 def activate(html_page, job, **kwargs):
     if 'pullAtt' in job:
@@ -30,8 +29,8 @@ def activate(html_page, job, **kwargs):
     elif 'markAtt' in job:
         soup = BeautifulSoup(html_page, "html.parser")
         student_attendance_rows = soup.find(id="table-1").find("tbody").find_all("tr")
-        student_data = excelReader.read("AttListDef")
+        student_data = excelReader.read("AttListDef.xls")
         for studentAttendanceRow in student_attendance_rows:
             for data in student_data:
-
+                print data
         return False

@@ -2,3 +2,4 @@ splinter
 easygui
 bs4
 openpyxl
+xlrd
