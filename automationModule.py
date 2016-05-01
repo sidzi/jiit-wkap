@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from utils import excelWriter, excelReader
 
+
 def activate(html_page, job, **kwargs):
     if 'pullAtt' in job:
         if 'fileNameID' in kwargs:
@@ -29,7 +30,8 @@ def activate(html_page, job, **kwargs):
     elif 'markAtt' in job:
         soup = BeautifulSoup(html_page, "html.parser")
         student_attendance_rows = soup.find(id="table-1").find("tbody").find_all("tr")
-        student_data = excelReader.read("AttListDef.xls")
+        student_data = excelReader.read(
+            "AttListDef.xlsx")  # TODO Add a default Attendance Sheet Generator because the original one is corrupt
         for studentAttendanceRow in student_attendance_rows:
             for data in student_data:
                 print data
