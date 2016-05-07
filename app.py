@@ -18,6 +18,9 @@ if len(sys.argv) > 1:
     elif 'markAtt' in sys.argv:
         urls.append("https://webkiosk.jiit.ac.in/EmployeeFiles/AcademicInfo/NewDailyStudentAttendanceEntry1.jsp")
         jobs.append('markAtt')
+    elif 'createAtt' in sys.argv:
+        urls.append("https://webkiosk.jiit.ac.in/EmployeeFiles/AcademicInfo/ViewAttendanceSummary11.jsp?SrcType=I")
+        jobs.append('createAtt')
     else:
         print "Enter a valid argument"
         exit()
@@ -109,3 +112,21 @@ with Browser() as browser:
                     easygui.msgbox(msg="Attendance marked")
                 else:
                     easygui.msgbox(msg="Attendance Marking Failed")
+        elif jobs[i] is 'createAtt':
+            exam_choices = BeautifulSoup(browser.html, "html.parser").find(id='Exam').find_all("option")
+            exam_choices_list = list(exam_choice.attrs['value'] for exam_choice in exam_choices)
+            exam_choice_selected = easygui.choicebox(choices=exam_choices_list)
+            browser.find_by_id('Exam').first.select(exam_choice_selected)
+
+            subject_choices = BeautifulSoup(browser.html, "html.parser").find(id='Subject').find_all("option")
+            subject_choices_list = list(choice.attrs['value'] for choice in subject_choices)
+            subject_choice_selected = easygui.choicebox(choices=subject_choices_list)
+            browser.find_by_id('Subject').first.select(subject_choice_selected)
+
+            button = browser.find_by_value('Show/Refresh')
+            button.click()
+
+            if browser.status_code == 200:
+                if automationModule.activate(browser.html, job=jobs[i], fileNameID=subject_choice_selected):
+                    easygui.msgbox(msg="Attendance list created !!")
+            i += 1
