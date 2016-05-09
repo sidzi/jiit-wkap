@@ -109,9 +109,11 @@ with Browser() as browser:
 
             if browser.status_code == 200:
                 if automationModule.activate(browser.html, job=jobs[i]):
-                    easygui.msgbox(msg="Attendance marked")
+                    easygui.msgbox(msg="Attendance Marked")
                 else:
                     easygui.msgbox(msg="Attendance Marking Failed")
+            i += 1
+
         elif jobs[i] is 'createAtt':
             exam_choices = BeautifulSoup(browser.html, "html.parser").find(id='Exam').find_all("option")
             exam_choices_list = list(exam_choice.attrs['value'] for exam_choice in exam_choices)
@@ -129,4 +131,5 @@ with Browser() as browser:
             if browser.status_code == 200:
                 if automationModule.activate(browser.html, job=jobs[i], fileNameID=subject_choice_selected):
                     easygui.msgbox(msg="Attendance list created !!")
+
             i += 1

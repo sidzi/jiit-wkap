@@ -59,7 +59,7 @@ def activate(html_page, job, **kwargs):
         soup = BeautifulSoup(html_page, "html.parser")
         student_attendance_rows = soup.find(id="table-1").find("tbody").find_all("tr")
         student_data = excelReader.read(
-            "AttListDef.xlsx")  # TODO Add a default Attendance Sheet Generator because the original one is corrupt <#2>
+            "AttendanceInputList.xlsx")  # TODO Add a default Attendance Sheet Generator because the original one is corrupt <#2>
         for studentAttendanceRow in student_attendance_rows:
             for data in student_data:
                 print data

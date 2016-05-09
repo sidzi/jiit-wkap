@@ -24,7 +24,7 @@ def read(workbook_name):
             if cell.value is None:
                 read_data[j][i] = ""
             else:
-                read_data[j][i] = float(cell.value)
+                read_data[j][i] = cell.value
             i += 1
         j += 1
     return read_data
