@@ -56,11 +56,9 @@ def activate(html_page, job, **kwargs):
         att_status = soup.find(id="table-1").find("tbody").find("tr").find_all("td")
         return att_status[1].text
     elif 'markAtt' in job:
-        soup = BeautifulSoup(html_page, "html.parser")
-        student_attendance_rows = soup.find(id="table-1").find("tbody").find_all("tr")
-        student_data = excelReader.read(
-            "AttendanceInputList.xlsx")  # TODO Add a default Attendance Sheet Generator because the original one is corrupt <#2>
-        for studentAttendanceRow in student_attendance_rows:
-            for data in student_data:
-                print data
-        return False
+        file_id = kwargs.get('fileNameID')
+        try:
+            student_data = excelReader.read("AttendanceSheets/AttendanceInputList" + str(file_id) + ".xlsx")
+        except Exception:
+            raise IOError
+        return student_data

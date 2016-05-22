@@ -2,13 +2,6 @@ import os
 
 
 def read(workbook_name):
-    # if str(workbook_name).endswith('.xls'):
-    #     from xlrd import open_workbook
-    #     workbook = open_workbook(workbook_name)
-    #     for s in workbook.sheets():
-    #         for row in range(s.nrows):
-    #             print s.cell(row, 2).value
-    # else:
     import openpyxl
     if os.path.exists(workbook_name):
         workbook = openpyxl.load_workbook(workbook_name)
