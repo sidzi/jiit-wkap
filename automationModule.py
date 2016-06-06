@@ -59,6 +59,14 @@ def activate(html_page, job, **kwargs):
         file_id = kwargs.get('fileNameID')
         try:
             student_data = excelReader.read("AttendanceSheets/AttendanceInputList" + str(file_id) + ".xlsx")
-        except Exception:
+            temp_dict = {}
+            student_data = student_data[2:]
+            for data in student_data:
+                if data[3] == "" or data[3] == "p" or data[3] == "P":
+                    temp_dict[str(data[1])] = True
+                else:
+                    temp_dict[str(data[1])] = False
+        except Exception as e:
+            print e
             raise IOError
-        return student_data
+        return temp_dict

@@ -1,4 +1,5 @@
 import sys
+import time
 
 import automationModule
 import easygui
@@ -97,6 +98,7 @@ with Browser() as browser:
             try:
                 student_data = automationModule.activate(browser.html, job=jobs[i], fileNameID=subject_choice_selected)
             except IOError:
+                student_data = None
                 easygui.msgbox('Please put the attendance sheet in the "AttendanceSheets" Folder!')
                 exit(1)
             button = browser.find_by_value('Submit')
@@ -117,20 +119,17 @@ with Browser() as browser:
                 j = 1
                 browser.find_by_id('allbox1').check()
                 for student_attendance_row in student_attendance_rows:
-                    for data in student_data:
-                        if data[1] == student_attendance_row.contents[1].contents[0]:
-                            print "match"
-                            try:
-                                if data[3] == "" or data[3] == "p" or data[3] == "P":
-                                    browser.find_by_id('Present' + str(j)).first.check()
-                                else:
-                                    pass
-                            except IndexError:
-                                browser.find_by_id('Present' + str(j)).first.check()
-                            j += 1
-                            break
-                            # TODO final submit button click to be added only at Project Completion and final Delivery
-
+                    try:
+                        if student_data[student_attendance_row.contents[1].contents[0]] is True:
+                            browser.find_by_id('Present' + str(j)).first.check()
+                        else:
+                            pass
+                        j += 1
+                    except IndexError:
+                        pass
+                        break
+                # TODO final submit button click to be added only at Project Completion and final Delivery
+                time.sleep(10)
             i += 1
 
         elif jobs[i] is 'createAtt':
