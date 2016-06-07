@@ -34,7 +34,6 @@ def activate(html_page, job, **kwargs):
         excel_writer.write(row=1, col=1, value="Enr. No.")
         excel_writer.write(row=1, col=2, value="Name")
         # excel_writer.write(row=1, col=2, value="Name") TODO Get Attendance Dates According to the timetable <#1>
-
         i = 2
         for studentAttendanceRow in student_attendance_rows:
             student_data = studentAttendanceRow.text.splitlines()[1:]
@@ -60,6 +59,7 @@ def activate(html_page, job, **kwargs):
         try:
             student_data = excelReader.read("AttendanceSheets/AttendanceInputList" + str(file_id) + ".xlsx")
             temp_dict = {}
+            datetime_data = student_data[1]
             student_data = student_data[2:]
             for data in student_data:
                 if data[3] == "" or data[3] == "p" or data[3] == "P":
@@ -69,4 +69,4 @@ def activate(html_page, job, **kwargs):
         except Exception as e:
             print e
             raise IOError
-        return temp_dict
+        return temp_dict, datetime_data

@@ -96,19 +96,26 @@ with Browser() as browser:
             subject_choice_selected = easygui.choicebox(choices=subject_choices_list)
             browser.find_by_id('Subject').first.select(subject_choice_selected)
             try:
-                student_data = automationModule.activate(browser.html, job=jobs[i], fileNameID=subject_choice_selected)
+                (student_data, datetime_data) = automationModule.activate(browser.html, job=jobs[i],
+                                                                          fileNameID=subject_choice_selected)
             except IOError:
-                student_data = None
+                student_data, datetime_data = None, None
                 easygui.msgbox('Please put the attendance sheet in the "AttendanceSheets" Folder!')
                 exit(1)
+            time_slot = datetime_data[3].split(";")
+            date1 = time_slot[0]
+            time1 = time_slot[1]
+            time2 = time_slot[2]
+            # Date to be provided within this block
+            browser.fill("qsysdate", str(date1))
             button = browser.find_by_value('Submit')
             button.click()
 
             checkbox = browser.find_by_id('SubSection1').first
             checkbox.check()
 
-            browser.fill("timepicker1", easygui.enterbox("Enter Class Start Time:"))
-            browser.fill("timepicker2", easygui.enterbox("Enter Class End Time:"))
+            browser.fill("timepicker1", str(time1))
+            browser.fill("timepicker2", str(time2))
 
             button = browser.find_by_value('Show/Refresh')
             button.click()
