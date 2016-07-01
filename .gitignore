@@ -1,5 +1,4 @@
 # Virtual Envs not to be commited
-venvForMajorProject/
 *.xlsx
 *.xls
 # Byte-compiled / optimized / DLL files
@@ -114,3 +113,7 @@ target/
 
 ## File-based project format:
 *.iws
+
+# Custom Rules
+user.conf
+AttendanceSheets/*
