@@ -1,2 +1,2 @@
 # jiit-wkap
-## Webkiosk Automation app for Professors
+## Jaypee Institute of Information Technology Webkiosk Automation app for Professors
